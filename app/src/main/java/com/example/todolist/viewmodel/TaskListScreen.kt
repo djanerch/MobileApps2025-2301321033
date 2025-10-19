@@ -3,23 +3,16 @@ fun TaskListScreen(
     viewModel: TaskViewModel,
     onAddClick: () -> Unit
 ) {
-    val tasks by viewModel.tasks.collectAsState(initial = emptyList())
+    val tasks by viewModel.tasks.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.loadTasks()
-    }
+    LaunchedEffect(Unit) { viewModel.loadTasks() }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) { Text("+") }
         }
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
-        ) {
+        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
             if (tasks.isEmpty()) {
                 Text("Няма задачи")
             } else {
