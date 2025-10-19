@@ -5,6 +5,10 @@ plugins {
     kotlin("kapt")
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 android {
     namespace = "com.example.todolist"
     compileSdk = 36

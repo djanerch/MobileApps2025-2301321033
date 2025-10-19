@@ -1,26 +1,27 @@
 package com.example.todolist
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.todolist.viewmodel.TaskViewModel
 
 @Composable
-fun ToDoNavGraph() {
+fun ToDoNavGraph(viewModel: TaskViewModel) {
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
-        startDestination = "task_list"
-    ) {
-        composable("task_list") {
-            TaskListScreen(onAddClick = {
-                navController.navigate("add_task")
-            })
+    NavHost(navController = navController, startDestination = "taskList") {
+        composable("taskList") {
+            TaskListScreen(
+                viewModel = viewModel,
+                onAddClick = { navController.navigate("addTask") }
+            )
         }
-        composable("add_task") {
-            AddTaskScreen(onBack = { navController.popBackStack() })
+        composable("addTask") {
+            AddTaskScreen(
+                viewModel = viewModel,
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }
