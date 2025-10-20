@@ -16,6 +16,22 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
     val tasks: StateFlow<List<Task>> = _tasks
 
+    fun deleteTask(task: Task) {
+        viewModelScope.launch(Dispatchers.IO) {
+            taskDao.delete(task)
+            _tasks.value = taskDao.getAllTasks()
+        }
+    }
+
+    fun editTask(task: Task, newName: String) {
+        if (newName.isBlank()) return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val updatedTask = task.copy(name = newName)
+            taskDao.update(updatedTask)
+            _tasks.value = taskDao.getAllTasks()
+        }
+    }
     fun loadTasks() {
         viewModelScope.launch(Dispatchers.IO) {
             _tasks.value = taskDao.getAllTasks()

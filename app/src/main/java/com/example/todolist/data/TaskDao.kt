@@ -1,16 +1,23 @@
+// TaskDao.kt
 package com.example.todolist.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-// Removed Flow import
+import androidx.room.Update
 
 @Dao
 interface TaskDao {
     @Insert
     suspend fun insert(task: Task)
 
-    // ⬇️ FIX: Must be 'suspend' and return 'List<Task>' to match your ViewModel ⬇️
+    @Update
+    suspend fun update(task: Task)
+
+    @Delete
+    suspend fun delete(task: Task)
+
     @Query("SELECT * FROM tasks ORDER BY id ASC")
     suspend fun getAllTasks(): List<Task>
 }

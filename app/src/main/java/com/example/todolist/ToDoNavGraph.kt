@@ -1,5 +1,3 @@
-// ToDoNavGraph.kt (Файлът, който трябва да бъде коригиран)
-
 package com.example.todolist
 
 import androidx.compose.runtime.Composable
@@ -7,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.todolist.viewmodel.TaskViewModel
+import com.example.todolist.ui.tasklist.TaskListScreen
 
 @Composable
 fun ToDoNavGraph(viewModel: TaskViewModel) {
@@ -16,16 +15,14 @@ fun ToDoNavGraph(viewModel: TaskViewModel) {
 
         composable("taskList") {
             TaskListScreen(
-                viewModel = viewModel, // ⬅️ Сега вече е коректно
+                viewModel = viewModel,
                 onAddClick = { navController.navigate("addTask") }
             )
         }
 
         composable("addTask") {
             AddTaskScreen(
-                // 2. Подаваме ViewModel
                 viewModel = viewModel,
-                // 3. FIX: Използваме onSaveComplete, за да съвпадне със сигнатурата на AddTaskScreen
                 onSaveComplete = { navController.popBackStack() }
             )
         }
