@@ -8,7 +8,11 @@ import com.example.todolist.viewmodel.TaskViewModel
 import com.example.todolist.ui.tasklist.TaskListScreen
 
 @Composable
-fun ToDoNavGraph(viewModel: TaskViewModel) {
+fun ToDoNavGraph(
+    viewModel: TaskViewModel,
+    isDarkThemeEnabled: Boolean,
+    onToggleTheme: (Boolean) -> Unit
+) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "taskList") {
@@ -16,7 +20,9 @@ fun ToDoNavGraph(viewModel: TaskViewModel) {
         composable("taskList") {
             TaskListScreen(
                 viewModel = viewModel,
-                onAddClick = { navController.navigate("addTask") }
+                onAddClick = { navController.navigate("addTask") },
+                isDarkThemeEnabled = isDarkThemeEnabled,
+                onToggleTheme = onToggleTheme
             )
         }
 

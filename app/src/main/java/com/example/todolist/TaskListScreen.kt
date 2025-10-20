@@ -3,6 +3,10 @@ package com.example.todolist.ui.tasklist
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness4
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -11,14 +15,13 @@ import androidx.compose.ui.unit.dp
 import com.example.todolist.viewmodel.TaskViewModel
 import com.example.todolist.data.Task
 
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskListScreen(
     viewModel: TaskViewModel,
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit,
+    isDarkThemeEnabled: Boolean, // Приемаме текущото състояние
+    onToggleTheme: (Boolean) -> Unit
 ) {
     val tasks by viewModel.tasks.collectAsState()
 
@@ -36,7 +39,26 @@ fun TaskListScreen(
             }
         },
         topBar = {
-            TopAppBar(title = { Text("Моите задачи") })
+            TopAppBar(
+                title = { Text("Моите задачи") },
+                actions = {
+                    // SWITCH КОМПОНЕНТ
+                    Switch(
+                        checked = isDarkThemeEnabled, // Използваме подаденото състояние
+                        onCheckedChange = { isChecked ->
+                            onToggleTheme(isChecked)
+                        },
+                        thumbContent = {
+                            Icon(
+                                Icons.Filled.Brightness4,
+                                contentDescription = "Превключи тема",
+                                modifier = Modifier.size(SwitchDefaults.IconSize)
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+            )
         }
     ) { padding ->
         Column(
@@ -111,18 +133,16 @@ fun TaskItem(
                 modifier = Modifier.weight(1f)
             )
 
-            // Бутон за редактиране
             IconButton(onClick = onEditClick) {
                 Icon(
-                    imageVector = androidx.compose.material.icons.Icons.Filled.Edit,
+                    imageVector = Icons.Filled.Edit,
                     contentDescription = "Редактиране"
                 )
             }
 
-            // Бутон за изтриване
             IconButton(onClick = onDeleteClick) {
                 Icon(
-                    imageVector = androidx.compose.material.icons.Icons.Filled.Delete,
+                    imageVector = Icons.Filled.Delete,
                     contentDescription = "Изтриване"
                 )
             }
